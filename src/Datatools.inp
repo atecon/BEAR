@@ -41,3 +41,86 @@ function void head_tail (const numeric target, int nrows[::5])
 
     endif
 end function
+
+
+function scalar is_str_series (const series y)
+    /*
+    Check if a given series is string-valued.
+
+    Parameters:
+    y (series): The series to check.
+
+    Returns:
+    scalar: Returns TRUE if the series is string-valued, otherwise returns FALSE.
+    */
+
+    if getinfo(y).has_string_table == TRUE
+        return TRUE
+    else
+        return FALSE
+    endif
+end function
+
+function scalar is_continuous_series (const series y)
+    /*
+    Check if a given series consists of numeric and non-discrete values.
+
+    Parameters:
+    y (series): The series to check.
+
+    Returns:
+    scalar: Returns TRUE if the series is numeric and non-discrete, otherwise returns FALSE.
+    */
+
+    if getinfo(y).has_string_table == TRUE || getinfo(y).discrete == TRUE
+        return FALSE
+    else
+        return TRUE
+    endif
+end function
+
+function scalar is_discrete_series (const series y)
+    /*
+    Check if a given series is numeric but consists only of discrete values.
+
+    Parameters:
+    y (series): The series to check.
+
+    Returns:
+    scalar: Returns TRUE if the series is numeric and non-discrete, otherwise returns FALSE.
+    */
+
+    if getinfo(y).has_string_table == FALSE && getinfo(y).discrete == TRUE
+        return TRUE
+    else
+        return FALSE
+    endif
+end function
+
+function matrix nuniq (const series target)
+    /*
+    Count the number of unique values in a given series. Missing values are
+    ignored and not counted.
+
+    Parameters:
+    y (series): The series to count unique values in.
+
+    Returns:
+    matrix: The number of unique values in the series.
+    */
+
+    matrix vals = uniq(target)
+    matrix nvals = vals ~ NA
+
+    loop i=1..nelem(vals)
+        nvals[i,2] = sum(target .= vals[i])
+    endloop
+
+*** TODO: add support for string-valued series -> show labels as rows
+
+    cnameset(nvals, "value n")
+
+    return nvals
+end function
+
+

@@ -22,3 +22,39 @@ tail(y, (2+$nobs))  # all rows
 head(L, 2)   # initial 2 rows
 tail(L, 2)  # last two rows
 tail(L, (2+$nobs))  # all rows
+
+
+# is_str_series()
+nulldata 3
+series y = normal()
+y[3] = NA
+series d = {NA, 1, 2}
+setinfo d --discrete
+series s = {1, 2, 2}'
+strings S = defarray("A", "B")
+stringify(s, S)
+
+assert(is_str_series(y) == FALSE)
+assert(is_str_series(d) == FALSE)
+assert(is_str_series(s) == TRUE)
+
+# is_continuous_series()
+assert(is_continuous_series(y) == TRUE)
+assert(is_continuous_series(s) == FALSE)
+assert(is_continuous_series(d) == FALSE)
+
+# is_discrete_series()
+assert(is_discrete_series(y) == FALSE)
+assert(is_discrete_series(s) == FALSE)
+assert(is_discrete_series(d) == TRUE)
+
+# nunique()
+nulldata 4
+series d = {NA, 1, 2, 1}
+matrix nvals = nuniq(d)
+print d
+print nvals
+
+
+# Function die die Anzahl der missing values für eine Liste zeigt
+
