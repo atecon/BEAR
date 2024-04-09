@@ -51,9 +51,15 @@ assert(is_discrete_series(d) == TRUE)
 # nunique()
 nulldata 4
 series d = {NA, 1, 2, 1}
-matrix nvals = nuniq(d)
-print d
-print nvals
+series s = {1, 2, 2, 1}'
+strings S = defarray("A", "B")
+stringify(s, S)
+
+matrix d_nvals = nuniq(d)
+print d_nvals
+
+matrix s_nvals = nuniq(s)
+print s_nvals
 
 
 # Function die die Anzahl der missing values für eine Liste zeigt

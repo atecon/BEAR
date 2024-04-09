@@ -97,6 +97,7 @@ function scalar is_discrete_series (const series y)
     endif
 end function
 
+
 function matrix nuniq (const series target)
     /*
     Count the number of unique values in a given series. Missing values are
@@ -106,7 +107,8 @@ function matrix nuniq (const series target)
     y (series): The series to count unique values in.
 
     Returns:
-    matrix: The number of unique values in the series.
+    matrix: The number of unique values in the series. If 'target' is a string
+    series, the distinct string values are additionally printed as row labels.
     */
 
     matrix vals = uniq(target)
@@ -116,11 +118,20 @@ function matrix nuniq (const series target)
         nvals[i,2] = sum(target .= vals[i])
     endloop
 
-*** TODO: add support for string-valued series -> show labels as rows
-
     cnameset(nvals, "value n")
+    if is_str_series(target) == TRUE
+        rnameset(nvals, strvals(target))
+    endif
 
     return nvals
 end function
 
 
+function matrix nmissing (args)
+    /* code description
+    return: type, description */
+
+    code
+
+    return variable
+end function
