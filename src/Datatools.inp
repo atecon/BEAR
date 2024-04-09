@@ -128,6 +128,25 @@ end function
 
 
 function matrix nmissing (const numeric target)
+    /*
+    Calculate the number of missing values in a given series or list.
+
+    The function checks the type of the input. If it's a series, it calculates the
+    number of missing values in the series. If it's a list, it calculates the
+    number of missing values for each series in the list and returns a matrix
+    with the results.
+
+    Parameters:
+    target (series or list): The series or list to calculate the number of missing values for.
+
+    Returns:
+    matrix: If the input is a series, returns a matrix with one element - the
+    number of missing values in the series. If the input is a list, returns a
+    matrix with the number of missing values for each series in the list. The row
+    names of the matrix are the variable names from the list, and the column name
+    is "n missing".
+    */
+
 
     if typename(target) != "series" && typename(target) != "list"
         errorif(TRUE, "Input must be of type 'series' or 'list'.")
@@ -142,6 +161,41 @@ function matrix nmissing (const numeric target)
 
         rnameset(res, varnames(target))
         cnameset(res, defarray("n missing"))
+    endif
+
+    return res
+end function
+
+
+function matrix shape (const numeric target)
+    /*
+    Get the shape of a given series, list, or matrix.
+
+    The function checks the type of the input. If it's a series, it returns a matrix with
+    two elements: the number of observations and 1. If it's a list, it returns a matrix
+    with two elements: the number of observations and the number of elements in the list.
+    If it's a matrix, it returns a matrix with two elements: the number of rows and the
+    number of columns in the matrix.
+
+    Parameters:
+    target (series, list, or matrix): The series, list, or matrix to get the shape of.
+
+    Returns:
+    matrix: A matrix with two elements: the number of rows (or observations) and the
+    number of columns (or elements) in the input.
+
+    Raises:
+    error: If the input is not a series, list, or matrix.
+    */
+
+    if typename(target) == "series"
+        matrix res = {$nobs, 1}
+    elif typename(target) == "list"
+        matrix res = {$nobs, nelem(target)}
+    elif typename(target) == "matrix"
+        matrix res = {rows(target), cols(target)}
+    else
+        errorif(TRUE, "unsupported data type")
     endif
 
     return res
