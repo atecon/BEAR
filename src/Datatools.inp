@@ -118,7 +118,7 @@ function matrix nuniq (const series target)
         nvals[i,2] = sum(target .= vals[i])
     endloop
 
-    cnameset(nvals, "value n")
+    cnameset(nvals, defarray("value", "n unique"))
     if is_str_series(target) == TRUE
         rnameset(nvals, strvals(target))
     endif
@@ -127,11 +127,22 @@ function matrix nuniq (const series target)
 end function
 
 
-function matrix nmissing (args)
-    /* code description
-    return: type, description */
+function matrix nmissing (const numeric target)
 
-    code
+    if typename(target) != "series" && typename(target) != "list"
+        errorif(TRUE, "Input must be of type 'series' or 'list'.")
+    endif
 
-    return variable
+
+    if typename(target) == "series"
+        matrix res = sum(!ok(target))
+    else
+        set skip_missing off
+        matrix res = sumc(!ok({target}))'
+
+        rnameset(res, varnames(target))
+        cnameset(res, defarray("n missing"))
+    endif
+
+    return res
 end function

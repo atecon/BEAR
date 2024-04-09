@@ -57,10 +57,29 @@ stringify(s, S)
 
 matrix d_nvals = nuniq(d)
 print d_nvals
+assert(d_nvals[1,1] == 1)
+assert(d_nvals[1,2] == 2)
+assert(d_nvals[2,1] == 2)
+assert(d_nvals[2,2] == 1)
 
 matrix s_nvals = nuniq(s)
-print s_nvals
+assert(s_nvals[1,2] == 2)
+assert(s_nvals[2,2] == 2)
+assert(rnameget(s_nvals)[1] == "A")
+assert(rnameget(s_nvals)[2] == "B")
 
 
-# Function die die Anzahl der missing values für eine Liste zeigt
+# nmissing
+nulldata 3
+series y = {1, NA, 3}
+series x = {NA, NA, -1}
 
+matrix nmiss = nmissing(y)
+assert(nmiss == 1)
+matrix nmiss = nmissing(x)
+assert(nmiss == 2)
+print nmiss
+
+list L = y x
+matrix nmiss = nmissing(L)
+print nmiss
