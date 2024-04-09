@@ -1,0 +1,24 @@
+clear
+set verbose off
+set assert stop
+
+include "./src/Datatools.inp" --force
+
+# Test head() and tail()
+nulldata 10
+series y = normal()
+series x = normal()
+list L = y x
+matrix m = seq(1,6)' ~ seq(1,6)'
+
+head(m)      # initial 5 rows
+tail(m, 2)  # only last two rows
+tail(m, 7)  # all rows
+
+head(y, 5)   # initial 5 rows
+tail(y, 2)  # last two rows
+tail(y, (2+$nobs))  # all rows
+
+head(L, 2)   # initial 2 rows
+tail(L, 2)  # last two rows
+tail(L, (2+$nobs))  # all rows
