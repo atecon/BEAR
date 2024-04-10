@@ -83,6 +83,9 @@ print nmiss
 list L = y x
 matrix nmiss = nmissing(L)
 print nmiss
+assert(nmiss[1] == 1)
+assert(nmiss[2] == 2)
+
 
 
 # shape
@@ -104,3 +107,54 @@ assert(m[2] == 2)
 matrix m = shape(mat)
 assert(m[1] == rows(mat))
 assert(m[2] == cols(mat))
+
+
+# Function showing dtypes of series
+nulldata 4
+series y = normal()
+series d = {NA, 1, 2, 1}
+setinfo d --discrete
+series s = {1, 2, 2, 1}'
+strings S = defarray("A", "B")
+stringify(s, S)
+list L = y d s
+
+dtypes(L)
+dtypes(y)
+dtypes(d)
+dtypes(s)
+
+
+# Aggregation für verschiedene Funktionen wie pandas agg()
+nulldata 4
+series y = normal()
+series x = normal()
+series category = {1, 2, 1, 2}
+series s = {1, 2, 2, 1}'
+strings S = defarray("A", "B")
+stringify(s, S)
+list L = y x
+
+strings methods = defarray("mean", "min") #, "max")
+
+matrix result = agg(L, category, methods)
+print result
+
+matrix result = agg(y, category, methods)
+print result
+
+# TODO: 'byvar' should take into account the string-values of s
+matrix result = agg(L, s, methods)
+print result
+
+open housing.gdt --quiet
+list Groupby = airco prefarea
+#eval aggregate(price, Groupby, "mean")
+
+strings methods = defarray("mean", "min", "max")
+eval agg(price, Groupby, methods)
+
+# last scenario: both 'target' and 'groupby' are lists
+list Targets = price lotsize
+#eval aggregate(Targets, Groupby, "mean")
+eval agg(Targets, Groupby, methods)

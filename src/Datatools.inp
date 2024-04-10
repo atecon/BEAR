@@ -61,6 +61,7 @@ function scalar is_str_series (const series y)
     endif
 end function
 
+
 function scalar is_continuous_series (const series y)
     /*
     Check if a given series consists of numeric and non-discrete values.
@@ -199,4 +200,96 @@ function matrix shape (const numeric target)
     endif
 
     return res
+end function
+
+
+function void dtypes (const numeric target)
+    /*
+    Print the data types of a given series or list.
+
+    The function checks the type of the input. If it's a series, it prints the data type
+    of the series. If it's a list, it prints the data type of each series in the list.
+
+    The data type of a series is determined by whether it has a string table and whether
+    it's discrete. If the series has a string table, its data type is "string". If it's
+    discrete, its data type is "discrete". Otherwise, its data type is "continuous".
+
+    Parameters:
+    target (series or list): The series or list to print the data types of.
+
+    Raises:
+    error: If the input is not a series or list.
+    */
+
+    errorif(typename(target) == "matrix", "Only series and list are accepted")
+
+    printf "\nData series types:\n"
+
+    if typename(target) == "series"
+        bundle B = getinfo(target)
+        string dtype = B.has_string_table ? "string" : B.discrete ? \
+        "discrete" : "continuous"
+        printf "%s\t -- %s\n", argname(target), dtype
+
+    else
+        loop foreach i target
+            bundle B = getinfo(target.$i)
+            string dtype = B.has_string_table ? "string" : B.discrete ? \
+                "discrete" : "continuous"
+            printf "%s\t -- %s\n", "$i", dtype
+        endloop
+        print ""
+    endif
+end function
+
+
+function matrix agg (const numeric targets,
+                     const numeric groupby,
+                     const strings methods)
+    /* code description
+    return: type, description */
+
+    errorif(typename(targets) != "series" && typename(targets) != "list",
+            "'targets' must be either series or list.")
+    errorif(typename(groupby) != "series" && typename(groupby) != "list",
+            "'groupby' must be either series or list.")
+
+    strings vname = typename(targets) == "series" ? argname(targets) : \
+        varnames(targets)
+
+    strings byvars_names = typename(groupby) == "series" ? argname(groupby) : \
+        varnames(groupby)
+
+    strings column_labels = byvars_names + "count"
+
+
+    scalar nskip = typename(groupby) == "list" ? 2 + nelem(groupby) : 3
+
+    loop foreach i methods
+        column_labels += add_agg_method_label("$i", vname)
+
+        if i == 1
+            matrix result = aggregate(targets, groupby, "$i")
+        else
+            result ~= aggregate(targets, groupby, "$i")[,nskip:]
+        endif
+    endloop
+
+    cnameset(result, column_labels)
+
+    return result
+end function
+
+
+function strings add_agg_method_label (const string method,
+                                      const strings vnames)
+    /* Compile string used as column name for agg(). */
+
+    strings S
+
+    loop foreach i vnames
+        S  += sprintf("%s(%s)", method, "$i")
+    endloop
+
+    return S
 end function
