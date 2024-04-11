@@ -125,7 +125,7 @@ dtypes(d)
 dtypes(s)
 
 
-# Aggregation für verschiedene Funktionen wie pandas agg()
+# Aggregation for multiple methods, like pandas' agg()
 nulldata 4
 series y = normal()
 series x = normal()
@@ -157,4 +157,7 @@ eval agg(price, Groupby, methods)
 # last scenario: both 'target' and 'groupby' are lists
 list Targets = price lotsize
 #eval aggregate(Targets, Groupby, "mean")
-eval agg(Targets, Groupby, methods)
+matrix agg = agg(Targets, Groupby, methods)
+set datacols 12
+print agg
+

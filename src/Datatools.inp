@@ -12,6 +12,7 @@ function void tail (const numeric target,
 end function
 
 
+# Private function
 function void head_tail (const numeric target, int nrows[::5])
     /* Return the first nrows rows of some series, list or matrix based on position.
     For negative values of nrows, this function returns the last |nrows| rows.
@@ -79,6 +80,7 @@ function scalar is_continuous_series (const series y)
         return TRUE
     endif
 end function
+
 
 function scalar is_discrete_series (const series y)
     /*
@@ -148,11 +150,9 @@ function matrix nmissing (const numeric target)
     is "n missing".
     */
 
-
     if typename(target) != "series" && typename(target) != "list"
         errorif(TRUE, "Input must be of type 'series' or 'list'.")
     endif
-
 
     if typename(target) == "series"
         matrix res = sum(!ok(target))
@@ -256,13 +256,9 @@ function matrix agg (const numeric targets,
 
     strings vname = typename(targets) == "series" ? argname(targets) : \
         varnames(targets)
-
     strings byvars_names = typename(groupby) == "series" ? argname(groupby) : \
         varnames(groupby)
-
     strings column_labels = byvars_names + "count"
-
-
     scalar nskip = typename(groupby) == "list" ? 2 + nelem(groupby) : 3
 
     loop foreach i methods
@@ -293,3 +289,4 @@ function strings add_agg_method_label (const string method,
 
     return S
 end function
+

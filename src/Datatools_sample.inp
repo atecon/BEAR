@@ -1,0 +1,53 @@
+set verbose off
+include Datatools.gfn
+
+open mrw.gdt --quiet
+
+
+# head() and tail()
+list L = dataset
+head(L)
+tail(L, 3)
+head(school)
+
+# is_str_series()
+eval is_str_series(OECD)
+
+# is_continuous_series()
+eval is_continuous_series(OECD)
+
+# is_discrete_series()
+is_discrete_series(OECD)
+setinfo OECD --discrete
+is_discrete_series(OECD)
+
+# nunique()
+eval nuniq(OECD)
+
+# nmissing()
+eval nmissing(gdp85)
+eval nmissing(school)
+
+# shape
+list L = gdp85 school
+eval shape(gdp85)
+eval shape(L)
+
+# Function showing dtypes of series
+list L = gdp85 school OECD
+dtypes(L)
+dtypes(gdp85)
+dtypes(OECD)
+
+
+# Aggregation for multiple methods, like pandas' agg()
+strings methods = defarray("mean", "min", "max")
+
+matrix result = agg(gdp85, OECD, methods)
+print result
+
+list Targets = gdp60 gdp85
+list Groupby = nonoil OECD
+matrix result = agg(Targets, Groupby, methods)
+print result
+
