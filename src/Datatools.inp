@@ -13,7 +13,7 @@ end function
 
 
 # Private function
-function void head_tail (const numeric target, int nrows[::5])
+function void head_tail (const numeric L, int nrows[::5])
     /* Return the first nrows rows of some series, list or matrix based on position.
     For negative values of nrows, this function returns the last |nrows| rows.
     If |nrows| is larger than the number of rows, this function returns all rows.
@@ -21,23 +21,23 @@ function void head_tail (const numeric target, int nrows[::5])
 
     errorif(nrows == 0, "'nrows' cannot be zero")
 
-    if typename(target) == "series" || typename(target) == "list"
+    if typename(L) == "series" || typename(L) == "list"
         scalar nrows = abs(nrows) > $nobs ? sgn(nrows)*$nobs : nrows
 
         if nrows > 0
-            print target --byobs --range=:nrows
+            print L --byobs --range=:nrows
         else
-            print target --byobs --range=nrows:
+            print L --byobs --range=nrows:
         endif
 
-    elif typename(target) == "matrix"
-        scalar nrows = abs(nrows) > rows(target) ? sgn(nrows)*rows(target) : nrows
+    elif typename(L) == "matrix"
+        scalar nrows = abs(nrows) > rows(L) ? sgn(nrows)*rows(L) : nrows
 
         if nrows > 0
-            print target[1:nrows,]
+            print L[1:nrows,]
         else
-            scalar init = rows(target) + nrows + 1
-            print target[init:,]
+            scalar init = rows(L) + nrows + 1
+            print L[init:,]
         endif
 
     endif
