@@ -38,16 +38,6 @@ assert(is_str_series(y) == FALSE)
 assert(is_str_series(d) == FALSE)
 assert(is_str_series(s) == TRUE)
 
-# is_continuous_series()
-assert(is_continuous_series(y) == TRUE)
-assert(is_continuous_series(s) == FALSE)
-assert(is_continuous_series(d) == FALSE)
-
-# is_discrete_series()
-assert(is_discrete_series(y) == FALSE)
-assert(is_discrete_series(s) == FALSE)
-assert(is_discrete_series(d) == TRUE)
-
 # nunique()
 nulldata 4
 series d = {NA, 1, 2, 1}
@@ -82,6 +72,11 @@ print nmiss
 
 list L = y x
 matrix nmiss = nmissing(L)
+print nmiss
+assert(nmiss[1] == 1)
+assert(nmiss[2] == 2)
+
+matrix nmiss = nmissing({L})
 print nmiss
 assert(nmiss[1] == 1)
 assert(nmiss[2] == 2)

@@ -31,13 +31,14 @@ Prints the last rows of a series, list, or matrix.
 - `target`: The series, list, or matrix to print.
 - `nrows`: The number of rows to print.
 
+
 **is_str_series()**
 
 ```
 function scalar is_str_series (const series y)
 ```
 
-Checks if a given series is string-valued.
+Checks if a given series is string-valued. It's a short-cut for `nelem(strvals(y))`.
 
 *Parameters:*
 
@@ -47,37 +48,6 @@ Checks if a given series is string-valued.
 
 - `scalar`: Returns TRUE if the series is string-valued, otherwise returns FALSE.
 
-**is_continuous_series()**
-
-```
-function scalar is_continuous_series (const series y)
-```
-
-Checks if a given series consists of numeric and non-discrete values.
-
-*Parameters:*
-
-- `y`: The series to check.
-
-*Returns:*
-
-- `scalar`: Returns TRUE if the series is numeric and non-discrete, otherwise returns FALSE.
-
-**is_discrete_series()**
-
-```
-function scalar is_discrete_series (const series y)
-```
-
-Checks if a given series is numeric but characterized as discrete through the `setinfo y --discrete` command.
-
-*Parameters:*
-
-- `y`: The series to check.
-
-*Returns:*
-
-- `scalar`: Returns TRUE if the series is numeric and discrete, otherwise returns FALSE.
 
 **nuniq()**
 
@@ -85,7 +55,7 @@ Checks if a given series is numeric but characterized as discrete through the `s
 function matrix nuniq (const series y)
 ```
 
-Counts the number of unique values in a given series. Missing values are ignored and not counted.
+Counts the number of distinct values in a given series. Missing values are ignored and not counted.
 
 *Parameters:*
 
@@ -102,15 +72,15 @@ Counts the number of unique values in a given series. Missing values are ignored
 function matrix nmissing (const numeric target)
 ```
 
-Calculates the number of missing values in a given series or list.
+Calculates the number of missing values in a given series, list or matrix.
 
 *Parameters:*
 
-- `target`: The series or list to calculate the number of missing values for.
+- `target`: The series, list or matrix to calculate the number of missing values for.
 
 *Returns:*
 
-- `matrix`: If the input is a series, returns a matrix with one element - the number of missing values in the series. If the input is a list, returns a matrix with the number of missing values for each series in the list. The row names of the matrix are the variable names from the list, and the column name is "n missing".
+- `matrix`: If the input is a series, returns a matrix with one element - the number of missing values in the series. If the input is a list or matrix, returns a matrix with the number of missing values for each series/ column. The row names of the matrix are the variable names from the list/ matrix, and the column name is "n missing".
 
 
 **shape()**
@@ -136,7 +106,11 @@ Gets the shape of a given series, list, or matrix.
 function void dtypes (const numeric target)
 ```
 
-Prints the data types of a given series or list.
+Prints the data types of a given series or list. The datatype can be:
+
+- "string" for a string-values series
+- "discrete" for discrete series
+- "continuous" for the standard case
 
 *Parameters:*
 

@@ -13,20 +13,14 @@ head(school)
 # is_str_series()
 eval is_str_series(OECD)
 
-# is_continuous_series()
-eval is_continuous_series(OECD)
-
-# is_discrete_series()
-is_discrete_series(OECD)
-setinfo OECD --discrete
-is_discrete_series(OECD)
-
 # nunique()
 eval nuniq(OECD)
 
 # nmissing()
-eval nmissing(gdp85)
-eval nmissing(school)
+eval nmissing(gdp85)  # 13 missings
+eval nmissing(school) # 0 missings
+matrix mat = {deflist(gdp85, school)}
+eval nmissing(mat)
 
 # shape
 list L = gdp85 school

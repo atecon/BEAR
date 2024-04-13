@@ -63,44 +63,6 @@ function scalar is_str_series (const series y)
 end function
 
 
-function scalar is_continuous_series (const series y)
-    /*
-    Check if a given series consists of numeric and non-discrete values.
-
-    Parameters:
-    y (series): The series to check.
-
-    Returns:
-    scalar: Returns TRUE if the series is numeric and non-discrete, otherwise returns FALSE.
-    */
-
-    if getinfo(y).has_string_table == TRUE || getinfo(y).discrete == TRUE
-        return FALSE
-    else
-        return TRUE
-    endif
-end function
-
-
-function scalar is_discrete_series (const series y)
-    /*
-    Check if a given series is numeric but consists only of discrete values.
-
-    Parameters:
-    y (series): The series to check.
-
-    Returns:
-    scalar: Returns TRUE if the series is numeric and non-discrete, otherwise returns FALSE.
-    */
-
-    if getinfo(y).has_string_table == FALSE && getinfo(y).discrete == TRUE
-        return TRUE
-    else
-        return FALSE
-    endif
-end function
-
-
 function matrix nuniq (const series target)
     /*
     Count the number of unique values in a given series. Missing values are
@@ -132,36 +94,43 @@ end function
 
 function matrix nmissing (const numeric target)
     /*
-    Calculate the number of missing values in a given series or list.
+    Calculate the number of missing values in a given series, list or matrix.
 
     The function checks the type of the input. If it's a series, it calculates the
-    number of missing values in the series. If it's a list, it calculates the
-    number of missing values for each series in the list and returns a matrix
-    with the results.
+    number of missing values in the series. If it's a list or matrix, it calculates
+    the number of missing values for each series/column in the list and returns
+    a matrix with the results.
 
     Parameters:
-    target (series or list): The series or list to calculate the number of missing values for.
+    target (series, list or matrix): The series, list or matrix to calculate the
+    number of missing values for.
 
     Returns:
     matrix: If the input is a series, returns a matrix with one element - the
-    number of missing values in the series. If the input is a list, returns a
-    matrix with the number of missing values for each series in the list. The row
-    names of the matrix are the variable names from the list, and the column name
-    is "n missing".
+    number of missing values in the series. If the input is a list or matrix,
+    returns a matrix with the number of missing values for each series in the
+    list. The row names of the matrix are the variable names from the list, and
+    the column name is "n missing".
     */
 
-    if typename(target) != "series" && typename(target) != "list"
-        errorif(TRUE, "Input must be of type 'series' or 'list'.")
-    endif
+    set skip_missing off
 
     if typename(target) == "series"
         matrix res = sum(!ok(target))
-    else
-        set skip_missing off
-        matrix res = sumc(!ok({target}))'
+        return res
+    endif
 
+    if typename(target) == "list"
+        matrix res = sumc(!ok({target}))'
         rnameset(res, varnames(target))
         cnameset(res, defarray("n missing"))
+
+    else # matrix case
+        matrix res = sumc(!ok(target))'
+        strings column_labels = cnameget(target)
+        if nelem(column_labels)
+            rnameset(res, column_labels)
+        endif
     endif
 
     return res
