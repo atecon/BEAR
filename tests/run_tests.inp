@@ -76,11 +76,14 @@ print nmiss
 assert(nmiss[1] == 1)
 assert(nmiss[2] == 2)
 
+set skip_missing off
 matrix nmiss = nmissing({L})
 print nmiss
 assert(nmiss[1] == 1)
 assert(nmiss[2] == 2)
+set skip_missing on
 
+#stop
 
 
 # shape

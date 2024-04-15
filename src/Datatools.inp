@@ -55,11 +55,7 @@ function scalar is_str_series (const series y)
     scalar: Returns TRUE if the series is string-valued, otherwise returns FALSE.
     */
 
-    if getinfo(y).has_string_table == TRUE
-        return TRUE
-    else
-        return FALSE
-    endif
+    return getinfo(y).has_string_table
 end function
 
 
