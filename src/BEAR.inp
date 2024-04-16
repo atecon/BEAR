@@ -169,6 +169,7 @@ function matrix nmissing (const numeric target)
     the column name is "n missing".
     */
 
+    set skip_missing off
     if typename(target) == "series"
         matrix res = sum(!ok(target))
         return res

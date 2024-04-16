@@ -1,6 +1,20 @@
-# Datatools Gretl Package Documentation
+# BEAR Gretl Package Documentation
 
-This package provides a set of tools for data manipulation and analysis in Gretl. Many of the functions are inspired by Python's well-known Pandas library.
+BEAR ist an acronym that stands for
+
+B- Basic
+E- Exploratory
+A- Analytics
+R- Routines
+
+The key aspects conveyed by "BEAR" are:
+
+- Basic: Suggesting the package offers fundamental data handling capabilities.
+- Exploratory: Indicating the functions allow users to explore and understand their datasets.
+- Analytics: Hinting at the analytical nature of the data manipulation tasks.
+- Routines: Representing the collection of utility functions or routines provided.
+
+Many of the functions are inspired by Python's well-known Pandas library.
 
 
 ## Public Functions
@@ -65,12 +79,12 @@ Counts the occurrence of each unique value in a series or matrix (column vector)
 
 *Returns:*
 
-- `matrix`: A matrix with the counts or relative frequencies of each unique value in the input. The row names of the matrix are the unique values from
-    the input, and the column name is the name of the input variable.
+- `matrix`: A matrix with the counts or relative frequencies of each unique value in the input. The row names of the matrix are the unique values from the input, and the column name is the name of the input variable.
 
-    If 'normalize' is TRUE, the column name is appended with "rel.freq.", otherwise it is appended with "count".
+If 'normalize' is TRUE, the column name is appended with "rel.freq.", otherwise it is appended with "count".
 
-    **Note**: For both series and matrix inputs, eventual missing values are not ignored when computing relative frequencies.
+**Note**: For both series and matrix inputs, eventual missing values are not ignored when computing relative frequencies.
+
 
 ```
 function matrix nuniq (const series y)

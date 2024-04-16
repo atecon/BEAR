@@ -1,8 +1,7 @@
 set verbose off
-include Datatools.gfn
+include BEAR.gfn
 
 open mrw.gdt --quiet
-
 
 # head() and tail()
 list L = dataset
@@ -23,7 +22,6 @@ eval value_counts(OECD)
 print "Number of relative frequencies for each distinct value:"
 eval value_counts(OECD, TRUE)
 
-
 # nmissing()
 eval nmissing(gdp85)  # 13 missings
 eval nmissing(school) # 0 missings
@@ -43,7 +41,6 @@ list L = gdp85 school OECD
 dtypes(L)
 dtypes(gdp85)
 dtypes(OECD)
-
 
 # Aggregation for multiple methods, like pandas' agg()
 strings methods = defarray("mean", "min", "max")

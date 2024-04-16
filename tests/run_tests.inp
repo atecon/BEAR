@@ -2,7 +2,7 @@ clear
 set verbose off
 set assert stop
 
-include "./src/Datatools.inp" --force
+include "./src/BEAR.inp" --force
 
 # Test head() and tail()
 nulldata 10
@@ -121,7 +121,7 @@ assert(cnames[1] == "foo")
 assert(cnames[2] == "rel.freq.")
 
 
-# nmissing
+# nmissing()
 nulldata 3
 series y = {1, NA, 3}
 series x = {NA, NA, -1}
@@ -134,11 +134,11 @@ print nmiss
 
 list L = y x
 matrix nmiss = nmissing(L)
-print nmiss
 assert(nmiss[1] == 1)
 assert(nmiss[2] == 2)
 
-set skip_missing off
+
+set skip_missing off  # for matrix required to activate this option
 matrix nmiss = nmissing({L})
 print nmiss
 assert(nmiss[1] == 1)

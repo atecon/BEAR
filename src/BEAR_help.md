@@ -1,6 +1,20 @@
-# Datatools Gretl Package Documentation
+# BEAR Gretl Package Documentation
 
-This package provides a set of tools for data manipulation and analysis in Gretl. Many of the functions are inspired by Python's well-known Pandas library.
+BEAR ist an acronym that stands for
+
+B- Basic
+E- Exploratory
+A- Analytics
+R- Routines
+
+The key aspects conveyed by "BEAR" are:
+
+- Basic: Suggesting the package offers fundamental data handling capabilities.
+- Exploratory: Indicating the functions allow users to explore and understand their datasets.
+- Analytics: Hinting at the analytical nature of the data manipulation tasks.
+- Routines: Representing the collection of utility functions or routines provided.
+
+Many of the functions are inspired by Python's well-known Pandas library.
 
 
 ## Public Functions

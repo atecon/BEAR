@@ -7,5 +7,5 @@ tags = C13 C52
 min-version = 2023b
 public = head tail is_str_series nuniq value_counts nmissing shape \
   dtypes agg
-help = Datatools_help.md
-sample-script = Datatools_sample.inp
+help = BEAR_help.md
+sample-script = BEAR_sample.inp
