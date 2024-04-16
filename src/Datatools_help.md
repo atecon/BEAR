@@ -49,13 +49,35 @@ Checks if a given series is string-valued. It's a short-cut for `nelem(strvals(y
 - `scalar`: Returns TRUE if the series is string-valued, otherwise returns FALSE.
 
 
-**nuniq()**
+**value_counts()**
+
+
+```
+function matrix value_counts (const numeric y)
+```
+
+Counts the occurrence of each unique value in a series or matrix (column vector). This corresponds to the frequency of each distinct observation.
+
+*Parameters:*
+
+- `y`: The series or matrix to count unique values in. If a matrix is provided, it must be a column vector.
+- `normalize` (optional, default is FALSE): If TRUE, the output will show the relative frequencies of the values instead of their counts.
+
+*Returns:*
+
+- `matrix`: A matrix with the counts or relative frequencies of each unique value in the input. The row names of the matrix are the unique values from the input, and the column name is the name of the input variable.
+
+If 'normalize' is TRUE, the column name is appended with "rel.freq.", otherwise it is appended with "count".
+
+**Note**: For both series and matrix inputs, eventual missing values are not ignored when computing relative frequencies.
+
 
 ```
 function matrix nuniq (const series y)
 ```
 
 Counts the number of distinct values in a given series. Missing values are ignored and not counted.
+Suppose a series consists of booleans (0 and 1), then the number of unique values is 2.
 
 *Parameters:*
 

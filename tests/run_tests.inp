@@ -38,25 +38,87 @@ assert(is_str_series(y) == FALSE)
 assert(is_str_series(d) == FALSE)
 assert(is_str_series(s) == TRUE)
 
-# nunique()
+# nuniq()
 nulldata 4
 series d = {NA, 1, 2, 1}
 series s = {1, 2, 2, 1}'
 strings S = defarray("A", "B")
 stringify(s, S)
+matrix mat = {d}
+list L = s d
 
-matrix d_nvals = nuniq(d)
-print d_nvals
-assert(d_nvals[1,1] == 1)
-assert(d_nvals[1,2] == 2)
-assert(d_nvals[2,1] == 2)
-assert(d_nvals[2,2] == 1)
+scalar d_uniq = nuniq(d)
+assert(d_uniq == 2)
+scalar s_uniq = nuniq(s)
+assert(s_uniq == 2)
+scalar mat_uniq = nuniq(mat)
+assert(mat_uniq == 2)
+catch scalar L_uniq = nuniq(L)
+assert($error != FALSE)
 
-matrix s_nvals = nuniq(s)
-assert(s_nvals[1,2] == 2)
-assert(s_nvals[2,2] == 2)
-assert(rnameget(s_nvals)[1] == "A")
-assert(rnameget(s_nvals)[2] == "B")
+# value_counts()
+nulldata 4
+series d = {NA, 1, 2, 1}
+series s = {1, 2, 2, 1}'
+strings S = defarray("A", "B")
+stringify(s, S)
+matrix mat = {d}
+list L = s d
+
+catch matrix L_value_counts = value_counts(L)
+assert($error > 0)
+catch matrix L_value_counts = value_counts({L})
+assert($error > 0)
+
+matrix d_value_counts = value_counts(d)
+assert(d_value_counts[1,1] == 1)
+assert(d_value_counts[1,2] == 2)
+assert(d_value_counts[2,1] == 2)
+assert(d_value_counts[2,2] == 1)
+strings cnames = cnameget(d_value_counts)
+assert(cnames[1] == "d")
+assert(cnames[2] == "count")
+
+matrix d_value_relfreq = value_counts(d, TRUE)
+assert(d_value_relfreq[1,1] == 1)
+assert(d_value_relfreq[1,2] == 2/4)
+assert(d_value_relfreq[2,1] == 2)
+assert(d_value_relfreq[2,2] == 1/4)
+strings cnames = cnameget(d_value_relfreq)
+assert(cnames[1] == "d")
+assert(cnames[2] == "rel.freq.")
+
+
+matrix s_value_counts = value_counts(s)
+assert(s_value_counts[1,2] == 2)
+assert(s_value_counts[2,2] == 2)
+assert(rnameget(s_value_counts)[1] == "A")
+assert(rnameget(s_value_counts)[2] == "B")
+
+matrix s_value_relfreq = value_counts(s, TRUE)
+assert(s_value_relfreq[1,2] == 2/4)
+assert(s_value_relfreq[2,2] == 2/4)
+assert(rnameget(s_value_relfreq)[1] == "A")
+assert(rnameget(s_value_relfreq)[2] == "B")
+
+cnameset(mat, "foo")
+matrix mat_value_counts = value_counts(mat)
+assert(mat_value_counts[1,1] == 1)
+assert(mat_value_counts[1,2] == 2)
+assert(mat_value_counts[2,1] == 2)
+assert(mat_value_counts[2,2] == 1)
+strings cnames = cnameget(mat_value_counts)
+assert(cnames[1] == "foo")
+assert(cnames[2] == "count")
+
+matrix mat_value_relfreq = value_counts(mat, TRUE)
+assert(mat_value_relfreq[1,1] == 1)
+assert(mat_value_relfreq[1,2] == 2/4)
+assert(mat_value_relfreq[2,1] == 2)
+assert(mat_value_relfreq[2,2] == 1/4)
+strings cnames = cnameget(mat_value_relfreq)
+assert(cnames[1] == "foo")
+assert(cnames[2] == "rel.freq.")
 
 
 # nmissing
@@ -82,8 +144,6 @@ print nmiss
 assert(nmiss[1] == 1)
 assert(nmiss[2] == 2)
 set skip_missing on
-
-#stop
 
 
 # shape

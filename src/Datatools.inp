@@ -59,32 +59,92 @@ function scalar is_str_series (const series y)
 end function
 
 
-function matrix nuniq (const series target)
+
+function scalar nuniq (const numeric target)
     /*
-    Count the number of unique values in a given series. Missing values are
-    ignored and not counted.
+    Counts the number of unique values in a given series or vector (matrix).
+    Suppose a series consists of booleans (0 and 1), then the number of unique
+    values is 2.
 
     Parameters:
-    y (series): The series to count unique values in.
+    - `target`: The series or column vector ('matrix') to count unique values in.
 
     Returns:
-    matrix: The number of unique values in the series. If 'target' is a string
-    series, the distinct string values are additionally printed as row labels.
+    - `scalar`: A scalar with the counts of unique values in the series/ vector.
+
+    Note: Missing values are ignored and are not a category counted.
     */
 
-    matrix vals = uniq(target)
-    matrix nvals = vals ~ NA
-
-    loop i=1..nelem(vals)
-        nvals[i,2] = sum(target .= vals[i])
-    endloop
-
-    cnameset(nvals, defarray("value", "n unique"))
-    if is_str_series(target) == TRUE
-        rnameset(nvals, strvals(target))
+    if typename(target) == "series"
+    elif typename(target) == "matrix"
+        errorif(cols(target) > 1, "only column vector is allowed")
+    else
+        errorif(TRUE, "unsupported datatype")
     endif
 
-    return nvals
+    matrix mat = value_counts(target)
+
+    return rows(mat)
+end function
+
+
+function matrix value_counts (const numeric target,
+                              const bool normalize[FALSE])
+    /*
+    Counts the occurrence of each unique value in a series or matrix (column vector).
+    This corresponds to the frequency of each distinct observation.
+
+    Parameters:
+    - `target`: The series or matrix to count unique values in. If a matrix is
+    provided, it must be a column vector.
+    - `normalize` (optional, default is FALSE): If TRUE, the output will show the
+    relative frequencies of the values instead of their counts.
+
+    Returns:
+    - `matrix`: A matrix with the counts or relative frequencies of each unique
+    value in the input. The row names of the matrix are the unique values from
+    the input, and the column name is the name of the input variable.
+    If 'normalize' is TRUE, the column name is appended with "rel.freq.",
+    otherwise it is appended with "count".
+
+    Note: For both series and matrix inputs, eventual missing values are not
+    ignored when computing relative frequencies.
+    */
+
+    if typename(target) == "series"
+    elif typename(target) == "matrix"
+        errorif(cols(target) > 1, "only column vector is allowed")
+    else
+        errorif(TRUE, "unsupported datatype")
+    endif
+
+    matrix mat = aggregate(null, target)
+
+    if typename(target) == "series"
+        string target_name = argname(target)
+        strings row_labels = strvals(target)
+    elif typename(target) == "matrix"
+        string target_name = nelem(cnameget(target)) ? \
+            cnameget(target)[1] : "y"
+        strings row_labels = rnameget(target)
+    endif
+    strings column_labels = defarray(target_name)
+    column_labels += normalize == TRUE ? "rel.freq." : "count"
+
+
+    # For 'series' and 'matrix', missing values are not ignored!
+    if normalize == TRUE
+        scalar init = cols(mat)
+        matrix mat = mat[,-init] ~ mat[,init:] ./ $nobs
+    endif
+
+    cnameset(mat, column_labels)
+
+    if nelem(row_labels)
+        rnameset(mat, row_labels)
+    endif
+
+    return mat
 end function
 
 
@@ -108,8 +168,6 @@ function matrix nmissing (const numeric target)
     list. The row names of the matrix are the variable names from the list, and
     the column name is "n missing".
     */
-
-    set skip_missing off
 
     if typename(target) == "series"
         matrix res = sum(!ok(target))

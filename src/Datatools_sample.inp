@@ -13,12 +13,23 @@ head(school)
 # is_str_series()
 eval is_str_series(OECD)
 
-# nunique()
-eval nuniq(OECD)
+# nuniq()
+printf "Number of unique values is %d for a boolean dummy.\n", nuniq(OECD)
+
+# value_counts()
+print "Number of occurrences for each distinct value:"
+eval value_counts(OECD)
+
+print "Number of relative frequencies for each distinct value:"
+eval value_counts(OECD, TRUE)
+
 
 # nmissing()
 eval nmissing(gdp85)  # 13 missings
 eval nmissing(school) # 0 missings
+
+## For a matrix
+set skip_missing off   # you must activate this option, to make this work for a matrix
 matrix mat = {deflist(gdp85, school)}
 eval nmissing(mat)
 
@@ -44,4 +55,3 @@ list Targets = gdp60 gdp85
 list Groupby = nonoil OECD
 matrix result = agg(Targets, Groupby, methods)
 print result
-
