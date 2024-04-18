@@ -7,6 +7,7 @@ PandasPort includes a comprehensive set of functions that mimic the functionalit
 Please ask questions and report bugs on the gretl mailing list if possible.
 Alternatively, create an issue ticket on the github repo (see below).
 Source code and test script(s) can be found here:
+
 https://github.com/atecon/PandasPort
 
 
