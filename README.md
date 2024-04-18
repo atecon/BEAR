@@ -4,6 +4,11 @@ PandasPort is a collection of functions that are inspired by Python's well-known
 
 PandasPort includes a comprehensive set of functions that mimic the functionality of popular Pandas methods. This package serves as a bridge, enabling a smooth migration path while taking advantage of Gretl's powerful econometric analysis capabilities.
 
+Please ask questions and report bugs on the gretl mailing list if possible.
+Alternatively, create an issue ticket on the github repo (see below).
+Source code and test script(s) can be found here:
+https://github.com/atecon/PandasPort
+
 
 ## Public Functions
 
