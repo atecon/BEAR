@@ -1,20 +1,8 @@
-# BEAR Gretl Package Documentation
+# PandasPort Gretl Package Documentation
 
-BEAR ist an acronym that stands for
+PandasPort is a collection of functions that are inspired by Python's well-known Pandas library. The package aims to provide a familiar and intuitive environment for users transitioning from Pandas to the Gretl software for data analysis and econometrics.
 
-B- Basic
-E- Exploratory
-A- Analytics
-R- Routines
-
-The key aspects conveyed by "BEAR" are:
-
-- Basic: Suggesting the package offers fundamental data handling capabilities.
-- Exploratory: Indicating the functions allow users to explore and understand their datasets.
-- Analytics: Hinting at the analytical nature of the data manipulation tasks.
-- Routines: Representing the collection of utility functions or routines provided.
-
-Many of the functions are inspired by Python's well-known Pandas library.
+PandasPort includes a comprehensive set of functions that mimic the functionality of popular Pandas methods. This package serves as a bridge, enabling a smooth migration path while taking advantage of Gretl's powerful econometric analysis capabilities.
 
 
 ## Public Functions

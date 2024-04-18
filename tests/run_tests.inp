@@ -2,7 +2,7 @@ clear
 set verbose off
 set assert stop
 
-include "./src/BEAR.inp" --force
+include "./src/PandasPort.inp" --force
 
 # Test head() and tail()
 nulldata 10
